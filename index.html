@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Gym Progress Pro</title>
+<meta name="theme-color" content="#070a0f">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+:root{--bg:#070a0f;--card:#111827;--card2:#1f2937;--field:#f8fafc;--fieldText:#020617;--text:#f8fafc;--muted:#a8b3c5;--accent:#22c55e;--blue:#38bdf8;--danger:#ef4444;--warn:#facc15;--line:#334155}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);padding-bottom:78px}
+header{position:sticky;top:0;background:#070a0fee;backdrop-filter:blur(10px);padding:14px 16px;border-bottom:1px solid var(--line);z-index:10}
+h1{font-size:22px;margin:0}.sub{color:var(--muted);font-size:12px;margin-top:4px}main{padding:12px;max-width:860px;margin:auto}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:14px;margin-bottom:12px;box-shadow:0 10px 28px rgba(0,0,0,.35)}
+.exerciseCard{border:2px solid #475569;background:linear-gradient(180deg,#111827,#0f172a)}
+.exerciseName{font-size:26px;font-weight:950;margin:0 0 10px;padding:12px;border-radius:16px;background:#f8fafc;color:#020617;text-align:center}
+.title{font-weight:850;font-size:17px;margin-bottom:8px}.muted{color:var(--muted);font-size:13px}.row{display:flex;gap:8px;align-items:center}.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+input,select,textarea{width:100%;border:2px solid #94a3b8;border-radius:14px;padding:13px;font-size:16px;background:var(--field);color:var(--fieldText);outline:none;font-weight:800}
+button{width:100%;border:0;border-radius:14px;padding:12px;font-size:15px;background:var(--accent);color:#03130a;font-weight:900;cursor:pointer}
+button.secondary{background:#263244;color:var(--text);border:1px solid #475569}button.danger{background:var(--danger);color:white}button.blue{background:var(--blue);color:#03111a}.small{padding:8px;font-size:12px;border-radius:10px}
+.nav{position:fixed;bottom:0;left:0;right:0;background:#070a0fee;backdrop-filter:blur(10px);border-top:1px solid var(--line);z-index:20;padding:8px 8px 10px;display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.nav button{background:transparent;color:var(--muted);font-size:11px;padding:7px 2px;border-radius:12px}.nav button.active{background:#1f2937;color:#22c55e}
+.metricgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.metric{background:#0b1220;border:1px solid #334155;border-radius:16px;padding:10px}.metric .label{font-size:11px;color:var(--muted);margin-bottom:5px}.metric .value{font-size:17px;font-weight:950}
+.hero{background:linear-gradient(135deg,#10251a,#0f172a 60%,#082f49);border:1px solid #256d46}.big{font-size:31px;font-weight:950}
+.exercise{border-top:1px solid var(--line);padding-top:12px;margin-top:12px}.pill{display:inline-block;background:#1f2937;border:1px solid #475569;border-radius:999px;padding:5px 9px;font-size:12px;color:#dbeafe;margin:2px}
+.last{background:#052e1a;border:1px solid #22c55e;border-radius:14px;padding:10px;margin:8px 0;color:#dcfff1}.evolution{color:#86efac;font-weight:900}.warn{color:var(--warn);font-weight:900}.pr{background:#422006;border:1px solid #f59e0b;color:#fef3c7;border-radius:14px;padding:10px;margin:8px 0;font-weight:900}
+.setrow{display:grid;grid-template-columns:38px 1fr 1fr 1fr;gap:6px;align-items:center;margin-top:7px}.setnum{text-align:center;color:#e2e8f0;font-weight:900;font-size:16px}
+.adjust{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0}.adjust button{padding:10px;background:#0b1220;color:#f8fafc;border:1px solid #475569}
+.savedBox{background:#0b1220;border:1px solid #475569;border-radius:14px;padding:10px;margin-top:10px}
+details{margin-top:10px;background:#0b1220;border:1px solid #334155;border-radius:14px;padding:10px}summary{cursor:pointer;color:#86efac;font-weight:900}
+table{width:100%;border-collapse:collapse;margin-top:8px;font-size:13px}td,th{border-bottom:1px solid #334155;padding:7px;text-align:left}th{color:#cbd5e1}
+.hidden{display:none}.empty{padding:18px;text-align:center;color:var(--muted)}canvas{width:100%;height:190px;background:#020617;border-radius:16px;border:1px solid #334155}
+.timer{font-size:50px;font-weight:950;text-align:center;margin:8px 0;color:#f8fafc}.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}.day{aspect-ratio:1;border-radius:10px;background:#1f2937;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:11px;color:#cbd5e1;border:1px solid #334155}.day.done{background:#14532d;color:#bbf7d0;font-weight:900;border-color:#22c55e}.day .letter{font-size:16px;color:#fff;font-weight:950}
+.badge{float:right;font-size:11px;padding:4px 8px;border-radius:999px;background:#14532d;color:#bbf7d0;border:1px solid #22c55e}.note{background:#1e293b;border-left:4px solid #38bdf8;border-radius:12px;padding:10px;margin:8px 0;color:#dbeafe;font-size:13px}.progress{height:14px;background:#020617;border:1px solid #334155;border-radius:999px;overflow:hidden;margin:8px 0}.progressbar{height:100%;background:#22c55e;width:0%}.searchBox{margin-top:8px}.muscleTag{display:inline-block;background:#082f49;border:1px solid #38bdf8;color:#dff7ff;border-radius:999px;padding:4px 8px;font-size:11px;margin-top:4px}
+@media(max-width:430px){.exerciseName{font-size:23px}.metricgrid{grid-template-columns:1fr 1fr}.grid4{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<header><h1>Gym Progress Pro</h1><div class="sub">Sessão flexível · progresso · volume por músculo · PRs</div></header>
+<main>
+<section id="view-resumo">
+  <div class="card hero"><div class="title">Resumo</div><div class="grid"><div><div class="big" id="heroSessoes">0</div><div class="muted">sessões finalizadas</div></div><div><div class="big" id="heroVolume">0</div><div class="muted">volume total</div></div></div></div>
+  <div class="card"><div class="title">Calendário dos últimos 30 dias</div><div class="calendar" id="calendar"></div><div class="muted" style="margin-top:8px">A letra no dia indica o treino feito: A, B, C...</div></div>
+  <div class="card"><div class="title">Volume semanal por músculo</div><div id="volumeMusculos"></div></div>
+  <div class="card"><div class="title">Últimas sessões</div><div id="ultimasSessoes"></div></div>
+</section>
+
+<section id="view-treino" class="hidden">
+  <div class="card">
+    <div class="title">Sessão de treino</div>
+    <select id="grupoTreino" onchange="renderTreino()"></select>
+    <div class="grid" style="margin-top:8px">
+      <button onclick="iniciarSessao()">Iniciar sessão</button>
+      <button class="secondary" onclick="finalizarSessao()">Finalizar sessão</button>
+    </div>
+    <div id="sessaoStatus" class="muted" style="margin-top:8px"></div><input class="searchBox" id="buscaTreino" placeholder="Buscar exercício no treino" oninput="renderTreino()">
+  </div>
+  <div class="card">
+    <div class="title">Cronômetro de descanso</div>
+    <div class="timer" id="timer">01:30</div>
+    <div class="grid4"><button class="secondary" onclick="setTimer(30)">0:30</button><button class="secondary" onclick="setTimer(60)">1:00</button><button class="secondary" onclick="setTimer(90)">1:30</button><button class="secondary" onclick="setTimer(120)">2:00</button></div>
+    <div style="height:8px"></div><div class="row"><button onclick="startTimer()">Iniciar</button><button class="secondary" onclick="pauseTimer()">Pausar</button><button class="danger" onclick="resetTimer()">Reset</button></div>
+  </div>
+  <div id="listaTreino"></div>
+</section>
+
+<section id="view-exercicios" class="hidden">
+  <div class="card">
+    <div class="title">Novo treino/grupo</div>
+    <div class="grid"><input id="novoGrupo" placeholder="Nome: Treino A"><input id="novaLetra" maxlength="2" placeholder="Letra: A"></div>
+    <div style="height:8px"></div><button onclick="addGrupo()">Adicionar treino</button>
+  </div>
+  <div class="card"><div class="title">Novo exercício</div><input id="novoExercicio" placeholder="Ex: Supino reto"><div style="height:8px"></div><input id="novoMusculo" placeholder="Músculo principal: Peito, Costas, Pernas..."><div style="height:8px"></div><select id="grupoExercicio"></select><div style="height:8px"></div><button onclick="addExercicio()">Salvar exercício</button></div>
+  <div class="card"><div class="title">Treinos cadastrados</div><div id="listaGrupos"></div></div>
+  <div class="card"><div class="title">Exercícios</div><div id="listaExercicios"></div></div>
+</section>
+
+<section id="view-historico" class="hidden">
+  <div class="card"><div class="title">Histórico visual</div><select id="exercicioHistorico" onchange="renderHistorico()"></select><div id="resumoHistorico"></div><div style="height:10px"></div><canvas id="grafico" width="680" height="260"></canvas></div>
+  <div id="listaHistorico"></div>
+</section>
+
+<section id="view-backup" class="hidden">
+  <div class="card">
+    <div class="title">Exportar</div>
+    <div class="note"><b>Excel:</b> use “Exportar CSV para Excel”. Backup JSON é só para restaurar o app.</div>
+    <button onclick="exportCSV()">Exportar CSV para Excel</button><div style="height:8px"></div>
+    <button class="secondary" onclick="exportar()">Exportar backup JSON</button><div style="height:8px"></div>
+    <textarea id="backupBox" rows="8" placeholder="Backup JSON aparece aqui."></textarea><div style="height:8px"></div>
+    <button class="secondary" onclick="importar()">Importar backup JSON</button><div style="height:8px"></div>
+    <button class="danger" onclick="resetar()">Apagar tudo</button>
+  </div>
+</section>
+</main>
+
+<nav class="nav">
+<button id="tab-resumo" class="active" onclick="showTab('resumo')">🏠<br>Resumo</button>
+<button id="tab-treino" onclick="showTab('treino')">🏋️<br>Treino</button>
+<button id="tab-exercicios" onclick="showTab('exercicios')">➕<br>Cadastro</button>
+<button id="tab-historico" onclick="showTab('historico')">📈<br>Histórico</button>
+<button id="tab-backup" onclick="showTab('backup')">☁️<br>Mais</button>
+</nav>
+
+<script>
+if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./service-worker.js"))}
+const KEY="gym_progress_pro_v8";let db=load();let activeSets={};let inputDraft={};let sessao=null;let timerSeconds=90,timerLeft=90,timerInt=null,audioCtx=null;
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2)}
+function defaultDb(){const a=uid(),b=uid();return{grupos:[{id:a,nome:"Treino A",letra:"A"},{id:b,nome:"Treino B",letra:"B"}],exercicios:[],treinos:[],sessoes:[]}}
+function migrate(o){
+ if(!o)return defaultDb(); if(!o.sessoes)o.sessoes=[]; if(!o.grupos)return defaultDb();
+ o.grupos.forEach((g,i)=>{if(!g.letra)g.letra=(g.nome.match(/[A-Z]/)||[String.fromCharCode(65+i)])[0]});
+ if(o.registros&&!o.treinos){o.treinos=o.registros.map(r=>({id:r.id||uid(),exercicioId:r.exercicioId,grupoId:o.exercicios.find(e=>e.id===r.exercicioId)?.grupoId,data:r.data||new Date().toISOString(),sets:[{peso:r.peso,reps:r.reps,rir:""}]}))}
+ if(!o.treinos)o.treinos=[]; o.treinos.forEach(t=>{if(!t.grupoId)t.grupoId=o.exercicios.find(e=>e.id===t.exercicioId)?.grupoId;t.sets.forEach(s=>{s.rir=s.rir??""})});
+ o.exercicios=(o.exercicios||[]).map(e=>({...e,musculo:e.musculo||""})); return {grupos:o.grupos,exercicios:o.exercicios,treinos:o.treinos,sessoes:o.sessoes}
+}
+function load(){let raw=localStorage.getItem(KEY)||localStorage.getItem("gym_progress_pro_v6")||localStorage.getItem("gym_progress_pro_v5")||localStorage.getItem("gym_progress_v3_sets")||localStorage.getItem("gym_progress_v1");if(raw){let d=migrate(JSON.parse(raw));localStorage.setItem(KEY,JSON.stringify(d));return d}let d=defaultDb();localStorage.setItem(KEY,JSON.stringify(d));return d}
+function save(){localStorage.setItem(KEY,JSON.stringify(db))}
+function showTab(tab){["resumo","treino","exercicios","historico","backup"].forEach(t=>{document.getElementById("view-"+t).classList.toggle("hidden",t!==tab);document.getElementById("tab-"+t).classList.toggle("active",t===tab)});renderAll()}
+function fmtDate(iso){return new Date(iso).toLocaleDateString("pt-BR")}function isoDate(iso){return new Date(iso).toISOString().slice(0,10)}function dayKey(d){return d.toISOString().slice(0,10)}
+function groupById(id){return db.grupos.find(g=>g.id===id)}function exerciseById(id){return db.exercicios.find(e=>e.id===id)}function exerciseName(id){return exerciseById(id)?.nome||"Exercício"}
+function setVolume(s){return Number(s.peso||0)*Number(s.reps||0)}function totalVolume(t){return t?t.sets.reduce((sum,s)=>sum+setVolume(s),0):0}
+function avgPeso(t){return t&&t.sets.length?t.sets.reduce((s,x)=>s+Number(x.peso||0),0)/t.sets.length:0}function avgReps(t){return t&&t.sets.length?t.sets.reduce((s,x)=>s+Number(x.reps||0),0)/t.sets.length:0}
+function maxPeso(t){return t&&t.sets.length?Math.max(...t.sets.map(s=>Number(s.peso||0))):0}function maxReps(t){return t&&t.sets.length?Math.max(...t.sets.map(s=>Number(s.reps||0))):0}
+function bestSet1RM(t){return t&&t.sets.length?Math.max(...t.sets.map(s=>Number(s.peso||0)*(1+Number(s.reps||0)/30))):0}
+function treinos(exId){return db.treinos.filter(t=>t.exercicioId===exId).sort((a,b)=>new Date(b.data)-new Date(a.data))}function lastTreino(exId){return treinos(exId)[0]}
+function bests(exId){const all=treinos(exId);if(!all.length)return{};return{bestCarga:all.reduce((a,b)=>maxPeso(b)>maxPeso(a)?b:a,all[0]),bestVolume:all.reduce((a,b)=>totalVolume(b)>totalVolume(a)?b:a,all[0]),bestReps:all.reduce((a,b)=>maxReps(b)>maxReps(a)?b:a,all[0]),best1rm:all.reduce((a,b)=>bestSet1RM(b)>bestSet1RM(a)?b:a,all[0])}}
+function sessaoVolume(s){return s.treinoIds.map(id=>db.treinos.find(t=>t.id===id)).filter(Boolean).reduce((a,t)=>a+totalVolume(t),0)}
+function sessaoTreinos(s){return s.treinoIds.map(id=>db.treinos.find(t=>t.id===id)).filter(Boolean)}
+function renderVolumeMusculos(){
+ let box=document.getElementById("volumeMusculos"); if(!box)return;
+ let cutoff=new Date(); cutoff.setDate(cutoff.getDate()-7);
+ let map={};
+ db.treinos.filter(t=>new Date(t.data)>=cutoff).forEach(t=>{
+   let ex=exerciseById(t.exercicioId);
+   let m=(ex?.musculo||groupById(ex?.grupoId)?.nome||"Sem músculo").trim();
+   map[m]=(map[m]||0)+totalVolume(t);
+ });
+ let items=Object.entries(map).sort((a,b)=>b[1]-a[1]);
+ box.innerHTML=items.length?items.map(([m,v])=>`<div class="exercise"><b>${m}</b><br><span class="muted">Volume 7 dias: ${v.toFixed(0)}</span></div>`).join(""):'<div class="empty">Sem volume nos últimos 7 dias.</div>';
+}
+
+function renderResumo(){document.getElementById("heroSessoes").textContent=db.sessoes.length;document.getElementById("heroVolume").textContent=db.treinos.reduce((s,t)=>s+totalVolume(t),0).toFixed(0);
+ let byDay={};db.sessoes.forEach(s=>{byDay[s.data.slice(0,10)]=groupById(s.grupoId)?.letra||"•"});
+ let days=[];for(let i=29;i>=0;i--){let d=new Date();d.setDate(d.getDate()-i);let k=dayKey(d),l=byDay[k]||"";days.push(`<div class="day ${l?'done':''}"><div>${d.getDate()}</div>${l?`<div class="letter">${l}</div>`:""}</div>`)}
+ document.getElementById("calendar").innerHTML=days.join("");
+ const ult=[...db.sessoes].sort((a,b)=>new Date(b.data)-new Date(a.data)).slice(0,6);
+ renderVolumeMusculos(); document.getElementById("ultimasSessoes").innerHTML=ult.length?ult.map(s=>{let g=groupById(s.grupoId);let ts=sessaoTreinos(s);return `<div class="exercise"><b>${g?.letra||""} ${g?.nome||"Treino"}</b> <span class="badge">${fmtDate(s.data)}</span><br><span class="muted">${ts.length} exercícios · ${ts.reduce((a,t)=>a+t.sets.length,0)} séries · volume ${sessaoVolume(s).toFixed(0)}${s.duracaoMin?` · ${s.duracaoMin} min`:""}</span><details><summary>Ver ordem feita</summary>${ts.map((t,i)=>`${i+1}. ${exerciseName(t.exercicioId)} — ${t.sets.length} séries`).join("<br>")}</details></div>`}).join(""):'<div class="empty">Sem sessões finalizadas ainda.</div>'}
+function renderSessaoStatus(){
+ let el=document.getElementById("sessaoStatus");if(!el)return;
+ if(!sessao){el.innerHTML="Nenhuma sessão iniciada.";return}
+ let g=groupById(sessao.grupoId);
+ let total=db.exercicios.filter(e=>e.grupoId===sessao.grupoId).length||1;
+ let feitos=sessao.treinoIds.length;
+ let pct=Math.min(100,Math.round((feitos/total)*100));
+ let min=Math.max(0,Math.round((new Date()-new Date(sessao.data))/60000));
+ let series=sessaoTreinos(sessao).reduce((a,t)=>a+t.sets.length,0);
+ el.innerHTML=`Sessão em andamento: <b>${g?.letra||""} ${g?.nome||""}</b><div class="progress"><div class="progressbar" style="width:${pct}%"></div></div>${feitos}/${total} exercícios · ${series} séries · ${min} min`;
+}
+function metricCards(exId){const l=lastTreino(exId),b=bests(exId);if(!l)return '<div class="muted">Sem registro ainda.</div>';return `<div class="metricgrid"><div class="metric"><div class="label">Último</div><div class="value">${l.sets.length} séries</div></div><div class="metric"><div class="label">Média último</div><div class="value">${avgPeso(l).toFixed(1)}kg · ${avgReps(l).toFixed(1)} reps</div></div><div class="metric"><div class="label">PR carga</div><div class="value">${maxPeso(b.bestCarga)} kg</div></div><div class="metric"><div class="label">PR reps</div><div class="value">${maxReps(b.bestReps)}</div></div><div class="metric"><div class="label">PR volume</div><div class="value">${totalVolume(b.bestVolume).toFixed(0)}</div></div><div class="metric"><div class="label">PR 1RM</div><div class="value">${bestSet1RM(b.best1rm).toFixed(1)} kg</div></div></div>`}
+function renderSelects(){["grupoTreino","grupoExercicio"].forEach(id=>{const el=document.getElementById(id),cur=el.value;el.innerHTML=db.grupos.map(g=>`<option value="${g.id}">${g.letra||""} - ${g.nome}</option>`).join("");if(cur)el.value=cur});const eh=document.getElementById("exercicioHistorico"),cur=eh.value;eh.innerHTML=db.exercicios.map(e=>`<option value="${e.id}">${e.nome}</option>`).join("");if(cur)eh.value=cur}
+function addGrupo(){const nome=document.getElementById("novoGrupo").value.trim(),letra=document.getElementById("novaLetra").value.trim().toUpperCase();if(!nome)return alert("Digite o nome do treino.");db.grupos.push({id:uid(),nome,letra:letra||nome[0].toUpperCase()});document.getElementById("novoGrupo").value="";document.getElementById("novaLetra").value="";save();renderAll()}
+function addExercicio(){const nome=document.getElementById("novoExercicio").value.trim(),grupoId=document.getElementById("grupoExercicio").value,musculo=document.getElementById("novoMusculo").value.trim();if(!nome)return alert("Digite o nome do exercício.");db.exercicios.push({id:uid(),nome,grupoId,musculo});document.getElementById("novoExercicio").value="";document.getElementById("novoMusculo").value="";save();renderAll()}
+function delExercicio(id){if(!confirm("Excluir exercício e histórico dele?"))return;db.exercicios=db.exercicios.filter(e=>e.id!==id);db.treinos=db.treinos.filter(t=>t.exercicioId!==id);save();renderAll()}
+function delTreino(id){db.treinos=db.treinos.filter(t=>t.id!==id);db.sessoes.forEach(s=>s.treinoIds=s.treinoIds.filter(x=>x!==id));save();renderAll()}
+function renderGrupos(){document.getElementById("listaGrupos").innerHTML=db.grupos.map(g=>`<div class="exercise"><b>${g.letra} - ${g.nome}</b></div>`).join("")}
+
+function iniciarSessao(){let grupoId=document.getElementById("grupoTreino").value;if(sessao&&!confirm("Já existe uma sessão em andamento. Substituir?"))return;sessao={id:uid(),grupoId,data:new Date().toISOString(),treinoIds:[]};renderAll()}
+function finalizarSessao(){
+ if(!sessao)return alert("Nenhuma sessão iniciada.");
+ if(!sessao.treinoIds.length)return alert("Finalize pelo menos um exercício antes.");
+ sessao.fim=new Date().toISOString();
+ sessao.duracaoMin=Math.max(1,Math.round((new Date(sessao.fim)-new Date(sessao.data))/60000));
+ db.sessoes.push(sessao);
+ let ts=sessaoTreinos(sessao);
+ let resumo=ts.map((t,i)=>`${i+1}. ${exerciseName(t.exercicioId)} (${t.sets.length} séries)`).join("\n");
+ let volume=ts.reduce((a,t)=>a+totalVolume(t),0).toFixed(0);
+ let series=ts.reduce((a,t)=>a+t.sets.length,0);
+ sessao=null;save();renderAll();
+ alert(`Sessão finalizada!\n\n⏱️ ${db.sessoes.at(-1).duracaoMin} min\n🏋️ ${ts.length} exercícios\n🔥 ${series} séries\n📦 Volume ${volume}\n\nOrdem feita:\n${resumo}`);
+}
+function ensureActive(exId){if(!activeSets[exId])activeSets[exId]=[];if(!inputDraft[exId]){let l=lastTreino(exId);let n=activeSets[exId].length;let sug=l&&l.sets[n]?l.sets[n]:{peso:"",reps:"",rir:""};inputDraft[exId]={peso:sug.peso||"",reps:sug.reps||"",rir:sug.rir||""}}}
+function upd(exId,field,val){ensureActive(exId);inputDraft[exId][field]=val}
+function inc(exId,field,delta){ensureActive(exId);let v=parseFloat(inputDraft[exId][field]||0)+delta;if(v<0)v=0;inputDraft[exId][field]=field==="peso"?Number(v.toFixed(1)):Math.round(v);renderTreino()}
+function saveSerie(exId){ensureActive(exId);let d=inputDraft[exId];let peso=parseFloat(d.peso||0),reps=parseInt(d.reps||0),rir=d.rir;if(!peso||!reps)return alert("Preencha peso e repetições.");activeSets[exId].push({peso,reps,rir});let l=lastTreino(exId),next=activeSets[exId].length;let sug=l&&l.sets[next]?l.sets[next]:{peso:d.peso,reps:d.reps,rir:d.rir};inputDraft[exId]={peso:sug.peso||"",reps:sug.reps||"",rir:sug.rir||""};setTimer(90);startTimer();renderTreino()}
+function finalizarExercicio(exId){ensureActive(exId);if(!activeSets[exId].length)return alert("Salve pelo menos uma série.");if(!sessao)iniciarSessao();let old=bests(exId);let t={id:uid(),exercicioId:exId,grupoId:exerciseById(exId)?.grupoId,data:new Date().toISOString(),sets:activeSets[exId]};db.treinos.push(t);sessao.treinoIds.push(t.id);let msgs=[];if(!old.bestCarga||maxPeso(t)>maxPeso(old.bestCarga))msgs.push(`🏆 Novo PR de carga: ${maxPeso(t)} kg`);if(!old.bestVolume||totalVolume(t)>totalVolume(old.bestVolume))msgs.push(`🏆 Novo PR de volume: ${totalVolume(t).toFixed(0)}`);if(!old.bestReps||maxReps(t)>maxReps(old.bestReps))msgs.push(`🏆 Novo PR de repetições: ${maxReps(t)}`);activeSets[exId]=[];inputDraft[exId]=null;save();renderAll();alert("Exercício finalizado."+ (msgs.length? "\n\n"+msgs.join("\n"):""))}
+function copiarUltimo(exId){let l=lastTreino(exId);if(!l)return alert("Ainda não existe treino anterior.");activeSets[exId]=l.sets.map(s=>({peso:s.peso,reps:s.reps,rir:s.rir||""}));inputDraft[exId]=null;renderTreino()}
+function setsTable(t){return `<table><tr><th>#</th><th>Peso</th><th>Reps</th><th>RIR</th><th>Vol.</th></tr>${t.sets.map((s,i)=>`<tr><td>${i+1}</td><td>${s.peso}kg</td><td>${s.reps}</td><td>${s.rir||"-"}</td><td>${setVolume(s).toFixed(0)}</td></tr>`).join("")}</table>`}
+function activeTable(exId){return activeSets[exId]?.length?`<div class="savedBox"><b>Séries salvas hoje</b>${setsTable({sets:activeSets[exId]})}</div>`:'<div class="muted">Nenhuma série salva hoje.</div>'}
+function renderTreino(){renderSessaoStatus();let grupoId=document.getElementById("grupoTreino").value,busca=(document.getElementById("buscaTreino")?.value||"").toLowerCase(),exs=db.exercicios.filter(e=>e.grupoId===grupoId && e.nome.toLowerCase().includes(busca)),box=document.getElementById("listaTreino");if(!exs.length){box.innerHTML='<div class="card empty">Nenhum exercício nesse treino.</div>';return}box.innerHTML=exs.map(e=>{ensureActive(e.id);let l=lastTreino(e.id),d=inputDraft[e.id]||{peso:"",reps:"",rir:""};return `<div class="card exerciseCard"><h2 class="exerciseName">${e.nome}</h2>${e.musculo?`<div class="muscleTag">${e.musculo}</div>`:""}${metricCards(e.id)}${l?`<div class="last">Último: <b>${l.sets.length} séries</b> · média <b>${avgPeso(l).toFixed(1)}kg</b> × <b>${avgReps(l).toFixed(1)} reps</b><br><span class="muted">${fmtDate(l.data)} · volume ${totalVolume(l).toFixed(0)}</span></div><details><summary>Ver séries do último treino</summary>${setsTable(l)}</details>`:""}<div style="height:8px"></div><button class="secondary" onclick="copiarUltimo('${e.id}')">Copiar último treino</button><div class="title" style="margin-top:12px">Série atual</div><div class="setrow"><div class="setnum">${(activeSets[e.id]||[]).length+1}</div><input type="number" step="0.5" placeholder="Peso" value="${d.peso}" oninput="upd('${e.id}','peso',this.value)"><input type="number" placeholder="Reps" value="${d.reps}" oninput="upd('${e.id}','reps',this.value)"><input type="number" placeholder="RIR" value="${d.rir}" oninput="upd('${e.id}','rir',this.value)"></div><div class="adjust"><button onclick="inc('${e.id}','peso',-2.5)">-2,5kg</button><button onclick="inc('${e.id}','peso',2.5)">+2,5kg</button><button onclick="inc('${e.id}','reps',-1)">-1 rep</button><button onclick="inc('${e.id}','reps',1)">+1 rep</button></div>${activeTable(e.id)}<div class="row" style="margin-top:8px"><button onclick="saveSerie('${e.id}')">Salvar série</button><button class="blue" onclick="finalizarExercicio('${e.id}')">Finalizar exercício</button></div></div>`}).join("")}
+function renderExercicios(){document.getElementById("listaExercicios").innerHTML=db.exercicios.length?db.exercicios.map(e=>{let g=groupById(e.grupoId);return `<div class="exercise"><div class="row"><div style="flex:1"><b>${e.nome}</b><br><span class="pill">${g?.letra||""} ${g?.nome||""}</span>${e.musculo?`<br><span class="muscleTag">${e.musculo}</span>`:""}</div><button class="small danger" onclick="delExercicio('${e.id}')">Excluir</button></div>${metricCards(e.id)}</div>`}).join(""):'<div class="empty">Nenhum exercício cadastrado.</div>'}
+function renderHistorico(){let exId=document.getElementById("exercicioHistorico").value,all=treinos(exId);document.getElementById("resumoHistorico").innerHTML=exId?metricCards(exId):"";drawChart([...all].reverse());document.getElementById("listaHistorico").innerHTML=all.length?'<div class="card"><div class="title">Histórico</div>'+all.map(t=>`<div class="exercise"><b>${fmtDate(t.data)}</b><br><span class="muted">${t.sets.length} séries · média ${avgPeso(t).toFixed(1)}kg × ${avgReps(t).toFixed(1)} reps · volume ${totalVolume(t).toFixed(0)}</span><details><summary>Detalhar séries</summary>${setsTable(t)}</details><div style="height:6px"></div><button class="small danger" onclick="delTreino('${t.id}')">Excluir</button></div>`).join("")+'</div>':'<div class="card empty">Sem histórico.</div>'}
+function drawChart(registros){let c=document.getElementById("grafico"),ctx=c.getContext("2d");ctx.clearRect(0,0,c.width,c.height);ctx.strokeStyle="#334155";ctx.lineWidth=1;for(let i=0;i<5;i++){let y=30+i*45;ctx.beginPath();ctx.moveTo(30,y);ctx.lineTo(650,y);ctx.stroke()}if(registros.length<2){ctx.fillStyle="#cbd5e1";ctx.font="18px Arial";ctx.fillText("Poucos dados para gráfico",225,135);return}let vals=registros.map(totalVolume),max=Math.max(...vals)*1.1,pts=vals.map((v,i)=>({x:40+i*(600/(vals.length-1)),y:230-(v/max)*190}));ctx.strokeStyle="#22c55e";ctx.lineWidth=4;ctx.beginPath();pts.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.stroke();ctx.fillStyle="#22c55e";pts.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,5,0,Math.PI*2);ctx.fill()})}
+function setTimer(s){timerSeconds=s;timerLeft=s;renderTimer()}function renderTimer(){let m=String(Math.floor(timerLeft/60)).padStart(2,"0"),s=String(timerLeft%60).padStart(2,"0");document.getElementById("timer").textContent=`${m}:${s}`}
+function startTimer(){initAudio();clearInterval(timerInt);timerInt=setInterval(()=>{if(timerLeft>0){timerLeft--;renderTimer()}else{clearInterval(timerInt);finishAlert()}},1000)}
+function pauseTimer(){clearInterval(timerInt)}function resetTimer(){timerLeft=timerSeconds;renderTimer()}
+function initAudio(){try{audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==="suspended")audioCtx.resume()}catch(e){}}
+function beep(freq,dur,delay){if(!audioCtx)return;let osc=audioCtx.createOscillator(),gain=audioCtx.createGain();osc.frequency.value=freq;gain.gain.setValueAtTime(.001,audioCtx.currentTime+delay);gain.gain.exponentialRampToValueAtTime(.25,audioCtx.currentTime+delay+.02);gain.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+delay+dur);osc.connect(gain);gain.connect(audioCtx.destination);osc.start(audioCtx.currentTime+delay);osc.stop(audioCtx.currentTime+delay+dur)}
+function finishAlert(){if(navigator.vibrate)navigator.vibrate([300,120,300,120,300]);beep(880,.18,0);beep(1046,.18,.25);beep(1318,.25,.5)}
+function flatRows(){let rows=[["Data","Sessao","Letra","Grupo","Ordem","Exercicio","Serie","Peso_kg","Repeticoes","RIR","Volume","RM_1_estimado"]];db.sessoes.forEach(s=>{let g=groupById(s.grupoId);sessaoTreinos(s).forEach((t,ord)=>{t.sets.forEach((set,i)=>rows.push([isoDate(s.data),s.id,g?.letra||"",g?.nome||"",ord+1,exerciseName(t.exercicioId),i+1,String(set.peso).replace(".",","),set.reps,set.rir||"",setVolume(set).toFixed(0).replace(".",","),(set.peso*(1+set.reps/30)).toFixed(1).replace(".",",")]))})});return rows}
+function downloadFile(name,content,type){let blob=new Blob([content],{type}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)}
+function exportCSV(){let csv="\ufeff"+flatRows().map(r=>r.map(v=>`"${String(v).replaceAll('"','""')}"`).join(";")).join("\r\n");downloadFile("gym_progress_treinos_excel.csv",csv,"text/csv;charset=utf-8")}
+function exportar(){document.getElementById("backupBox").value=JSON.stringify(db)}
+function importar(){try{db=migrate(JSON.parse(document.getElementById("backupBox").value));save();renderAll();alert("Backup importado.")}catch(e){alert("Backup inválido.")}}
+function resetar(){if(!confirm("Apagar todos os dados?"))return;db=defaultDb();sessao=null;activeSets={};inputDraft={};save();renderAll()}
+function renderAll(){renderSelects();renderResumo();renderGrupos();renderTreino();renderExercicios();renderHistorico();renderTimer()}renderAll();
+</script>
+</body></html>
