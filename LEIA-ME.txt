@@ -1,1 +1,1 @@
-V8: inclui progresso de sessão, duração, volume semanal por músculo, busca rápida, campo de músculo e resumo final completo. Substitua todos os arquivos no GitHub.
+V9: salva sessão em andamento ao fechar app, permite marcar descanso/falta no calendário e editar treinos, letras e exercícios. Substitua todos os arquivos no GitHub.
